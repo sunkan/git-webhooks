@@ -4,9 +4,6 @@ namespace DavidBadura\GitWebhooks;
 
 use DavidBadura\GitWebhooks\Event\PushEvent;
 
-/**
- * @author David Badura <d.a.badura@gmail.com>
- */
 class Util
 {
 	public static function getPushType(string $ref): string

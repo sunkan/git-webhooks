@@ -2,28 +2,14 @@
 
 namespace DavidBadura\GitWebhooks\Event;
 
-/**
- * @author David Badura <d.a.badura@gmail.com>
- */
 class PingEvent extends AbstractEvent
 {
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	public $id;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $title;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $description;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $action;
 }

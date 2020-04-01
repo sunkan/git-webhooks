@@ -8,14 +8,9 @@ use DavidBadura\GitWebhooks\Provider\GitlabProvider;
 use DavidBadura\GitWebhooks\Provider\ProviderInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-/**
- * @author David Badura <d.a.badura@gmail.com>
- */
 class EventFactory
 {
-	/**
-	 * @var ProviderInterface[]
-	 */
+	/** @var ProviderInterface[] */
 	protected $providers = [];
 
 	/**

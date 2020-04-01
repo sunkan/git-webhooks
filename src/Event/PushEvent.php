@@ -5,51 +5,25 @@ namespace DavidBadura\GitWebhooks\Event;
 use DavidBadura\GitWebhooks\Struct\Commit;
 use DavidBadura\GitWebhooks\Struct\Repository;
 
-/**
- * @author David Badura <d.a.badura@gmail.com>
- */
 class PushEvent extends AbstractEvent
 {
-	const TYPE_BRANCH = 'branch';
-	const TYPE_TAG = 'tag';
+	public const TYPE_BRANCH = 'branch';
+	public const TYPE_TAG = 'tag';
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $before;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $after;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $ref;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $type;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $branchName;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $tagName;
-
-	/**
-	 * @var Repository
-	 */
+	/** @var Repository */
 	public $repository;
-
-	/**
-	 * @var Commit[]
-	 */
+	/** @var Commit[] */
 	public $commits = [];
 }

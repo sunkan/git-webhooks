@@ -5,9 +5,6 @@ namespace DavidBadura\GitWebhooks\Event;
 use DavidBadura\GitWebhooks\Struct\Commit;
 use DavidBadura\GitWebhooks\Struct\Repository;
 
-/**
- * @author David Badura <d.a.badura@gmail.com>
- */
 class MergeRequestEvent extends AbstractEvent
 {
 	public const STATE_OPEN = 'opened';

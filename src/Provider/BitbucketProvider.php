@@ -32,11 +32,7 @@ class BitbucketProvider extends AbstractProvider implements ProviderInterface
 		return $request->hasHeader('X-Event-Key');
 	}
 
-	/**
-	 * @param array $data
-	 * @return PushEvent
-	 */
-	private function createPushEvent($data)
+	private function createPushEvent(array $data): PushEvent
 	{
 		$event = new PushEvent();
 		$event->provider = self::NAME;

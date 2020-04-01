@@ -2,38 +2,18 @@
 
 namespace DavidBadura\GitWebhooks\Struct;
 
-/**
- * @author David Badura <d.a.badura@gmail.com>
- */
 class Repository
 {
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	public $id;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $name;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $namespace;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $description;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $homepage;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $url;
 }

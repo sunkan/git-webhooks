@@ -12,12 +12,9 @@ use DavidBadura\GitWebhooks\Struct\User;
 use DavidBadura\GitWebhooks\Util;
 use Psr\Http\Message\ServerRequestInterface;
 
-/**
- * @author David Badura <d.a.badura@gmail.com>
- */
 class GitlabProvider extends AbstractProvider implements ProviderInterface
 {
-	const NAME = 'gitlab';
+	public const NAME = 'gitlab';
 
 	public function create(ServerRequestInterface $request): ?AbstractEvent
 	{

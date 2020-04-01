@@ -5,23 +5,12 @@ namespace DavidBadura\GitWebhooks\Event;
 use DavidBadura\GitWebhooks\Struct\Repository;
 use DavidBadura\GitWebhooks\Struct\User;
 
-/**
- * @author David Badura <d.a.badura@gmail.com>
- */
 abstract class AbstractEvent
 {
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $provider;
-
-	/**
-	 * @var User
-	 */
+	/** @var User */
 	public $user;
-
-	/**
-	 * @var Repository
-	 */
+	/** @var Repository */
 	public $repository;
 }

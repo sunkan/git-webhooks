@@ -14,7 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class GithubProvider extends AbstractProvider implements ProviderInterface
 {
-	const NAME = 'github';
+	public const NAME = 'github';
 
 	public function create(ServerRequestInterface $request): ?AbstractEvent
 	{
