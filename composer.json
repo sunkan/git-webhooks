@@ -1,21 +1,14 @@
 {
-    "name": "davidbadura/git-webhooks",
+    "name": "sunkan/git-webhooks",
     "description": "normalise webhook events for github, gitlab and bitbucket",
-    "type": "lib",
+    "type": "library",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "DavidBadura",
-            "email": "d.a.badura@gmail.com"
-        }
-    ],
     "require": {
         "php": "^7.2",
         "psr/http-message": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0",
-        "symfony/var-dumper": "^2.7 || ^3.0",
         "nyholm/psr7": "^1.2"
     },
     "autoload": {
