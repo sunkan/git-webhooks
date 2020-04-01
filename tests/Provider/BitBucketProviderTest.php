@@ -56,23 +56,20 @@ class BitbucketProviderTest extends TestCase
 
 	public function testTag()
 	{
-		$this->markTestSkipped('missing example payload');
-		return;
-
-		$request = $this->createRequest('push', __DIR__ . '/_files/bitbucket/tag.json');
+		$request = $this->createRequest('repo:push', __DIR__ . '/_files/bitbucket/push-tag.json');
 
 		$provider = new BitbucketProvider();
 		/** @var PushEvent $event */
 		$event = $provider->create($request);
 
-		$this->assertInstanceOf('DavidBadura\GitWebhooks\Event\PushEvent', $event);
-		$this->assertEquals('refs/tags/test-tag', $event->ref);
+		$this->assertInstanceOf(PushEvent::class, $event);
+		$this->assertEquals(null, $event->ref);
 		$this->assertEquals(null, $event->branchName);
-		$this->assertEquals('test-tag', $event->tagName);
-		$this->assertEquals('public-repo', $event->repository->name);
-		$this->assertEquals('baxterthehacker', $event->repository->namespace);
+		$this->assertEquals('1.0.0', $event->tagName);
+		$this->assertEquals('Emma', $event->user->name);
+		$this->assertEquals('repo_name', $event->repository->name);
+		$this->assertEquals('team_name', $event->repository->namespace);
 		$this->assertCount(1, $event->commits);
-		$this->assertEquals('0d1a26e67d8f5eaf1f6ba5c57fc3c7d91ac0fd1c', $event->commits[0]->id);
 	}
 
 	public function testPullRequest()
