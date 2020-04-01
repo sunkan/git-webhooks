@@ -1,5 +1,7 @@
 # git-webhooks
 
+![Build Status](https://github.com/sunkan/git-webhooks/workflows/CI/badge.svg?branch=sunkan&event=push)
+
 normalise webhook events for github, gitlab and bitbucket
 
 Installation
