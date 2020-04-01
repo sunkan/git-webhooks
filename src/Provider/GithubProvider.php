@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace DavidBadura\GitWebhooks\Provider;
 
@@ -10,190 +10,155 @@ use DavidBadura\GitWebhooks\Struct\Commit;
 use DavidBadura\GitWebhooks\Struct\Repository;
 use DavidBadura\GitWebhooks\Struct\User;
 use DavidBadura\GitWebhooks\Util;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class GithubProvider extends AbstractProvider implements ProviderInterface
 {
-    const NAME = 'github';
+	const NAME = 'github';
 
-    /**
-     * @param Request $request
-     * @return AbstractEvent
-     */
-    public function create(Request $request)
-    {
-        $data = $this->getData($request);
-        switch ($request->headers->get('X-Github-Event')) {
-            case 'ping':
-                return $this->createPingEvent($data);
-            case 'push':
-                return $this->createPushEvent($data);
-            case 'pull_request':
-                return $this->createMergeRequestEvent($data);
-            default:
-                return null;
-        }
-    }
+	public function create(ServerRequestInterface $request): ?AbstractEvent
+	{
+		$data = $this->getData($request);
+		switch ($request->getHeaderLine('X-Github-Event')) {
+			case 'ping':
+				return $this->createPingEvent($data);
+			case 'push':
+				return $this->createPushEvent($data);
+			case 'pull_request':
+				return $this->createMergeRequestEvent($data);
+			default:
+				return null;
+		}
+	}
 
-    /**
-     * @param Request $request
-     * @return bool
-     */
-    public function support(Request $request)
-    {
-        return $request->headers->has('X-GitHub-Event');
-    }
+	public function support(ServerRequestInterface $request): bool
+	{
+		return $request->hasHeader('X-GitHub-Event');
+	}
 
-    /**
-     * @param array $data
-     * @return PingEvent
-     */
-    private function createPingEvent($data)
-    {
-        $event = new PingEvent();
-        $event->provider = self::NAME;
-        $event->repository = $this->createRepository($data['repository']);
+	private function createPingEvent(array $data): PingEvent
+	{
+		$event = new PingEvent();
+		$event->provider = self::NAME;
+		$event->repository = $this->createRepository($data['repository']);
 
-        return $event;
-    }
+		return $event;
+	}
 
-    /**
-     * @param array $data
-     * @return PushEvent
-     */
-    private function createPushEvent($data)
-    {
-        $event = new PushEvent();
-        $event->provider = self::NAME;
-        $event->before = $data['before'];
-        $event->after = $data['after'];
-        $event->ref = $data['ref'];
+	private function createPushEvent(array $data): PushEvent
+	{
+		$event = new PushEvent();
+		$event->provider = self::NAME;
+		$event->before = $data['before'];
+		$event->after = $data['after'];
+		$event->ref = $data['ref'];
 
-        $user = new User();
-        $user->id = $data['sender']['id'];
-        $user->name = $data['pusher']['name'];
+		$user = new User();
+		$user->id = $data['sender']['id'];
+		$user->name = $data['pusher']['name'];
 
-        if (isset($data['pusher']['email'])) {
-            $user->email = $data['pusher']['email'];
-        }
+		if (isset($data['pusher']['email'])) {
+			$user->email = $data['pusher']['email'];
+		}
 
-        $event->user = $user;
-        $event->repository = $this->createRepository($data['repository']);
-        $event->commits = $this->createCommits($data['commits']);
+		$event->user = $user;
+		$event->repository = $this->createRepository($data['repository']);
+		$event->commits = $this->createCommits($data['commits']);
 
-        if (!$event->commits and $data['head_commit']) {
-            $event->commits[] = $this->createCommit($data['head_commit']);
-        }
+		if (!$event->commits and $data['head_commit']) {
+			$event->commits[] = $this->createCommit($data['head_commit']);
+		}
 
-        $event->type = Util::getPushType($event->ref);
+		$event->type = Util::getPushType($event->ref);
 
-        if ($event->type == PushEvent::TYPE_BRANCH) {
-            $event->branchName = Util::getBranchName($event->ref);
-        } else {
-            $event->tagName = Util::getTagName($event->ref);
-        }
+		if ($event->type == PushEvent::TYPE_BRANCH) {
+			$event->branchName = Util::getBranchName($event->ref);
+		}
+		else {
+			$event->tagName = Util::getTagName($event->ref);
+		}
 
-        return $event;
-    }
+		return $event;
+	}
 
-    /**
-     * @param array $data
-     * @return MergeRequestEvent
-     */
-    private function createMergeRequestEvent(array $data)
-    {
-        $event = new MergeRequestEvent();
+	private function createMergeRequestEvent(array $data): MergeRequestEvent
+	{
+		$event = new MergeRequestEvent();
 
-        $event->provider = self::NAME;
-        $event->id = $data['pull_request']['id'];
-        $event->title = $data['pull_request']['title'];
-        $event->description = $data['pull_request']['body'];
+		$event->provider = self::NAME;
+		$event->id = $data['pull_request']['id'];
+		$event->title = $data['pull_request']['title'];
+		$event->description = $data['pull_request']['body'];
 
-        $event->targetBranch = $data['pull_request']['base']['ref'];
-        $event->sourceBranch = $data['pull_request']['head']['ref'];
-        $event->state = $this->pullRequestState($data['pull_request']);
-        $event->createdAt = new \DateTime($data['pull_request']['created_at']);
-        $event->updatedAt = new \DateTime($data['pull_request']['updated_at']);
+		$event->targetBranch = $data['pull_request']['base']['ref'];
+		$event->sourceBranch = $data['pull_request']['head']['ref'];
+		$event->state = $this->pullRequestState($data['pull_request']);
+		$event->createdAt = new \DateTimeImmutable($data['pull_request']['created_at']);
+		$event->updatedAt = new \DateTimeImmutable($data['pull_request']['updated_at']);
 
-        $user = new User();
-        $user->id = $data['pull_request']['user']['id'];
-        $user->name = $data['pull_request']['user']['login'];
+		$user = new User();
+		$user->id = $data['pull_request']['user']['id'];
+		$user->name = $data['pull_request']['user']['login'];
 
-        $event->user = $user;
-        $event->repository = $this->createRepository($data['pull_request']['base']['repo']);
-        $event->sourceRepository = $this->createRepository($data['pull_request']['head']['repo']);
+		$event->user = $user;
+		$event->repository = $this->createRepository($data['pull_request']['base']['repo']);
+		$event->sourceRepository = $this->createRepository($data['pull_request']['head']['repo']);
 
-        // TODO request data from $data['pull_request']['commits_url']
-        $event->lastCommit = new Commit();
-        $event->lastCommit->id = $data['pull_request']['head']['sha'];
+		// TODO request data from $data['pull_request']['commits_url']
+		$event->lastCommit = new Commit();
+		$event->lastCommit->id = $data['pull_request']['head']['sha'];
 
-        return $event;
-    }
+		return $event;
+	}
 
-    /**
-     * @param array $data
-     * @return Repository
-     */
-    private function createRepository(array $data)
-    {
-        $repository = new Repository();
+	private function createRepository(array $data): Repository
+	{
+		$repository = new Repository();
 
-        $repository->id = $data['id'];
-        $repository->name = $data['name'];
-        $repository->description = $data['description'];
-        $repository->namespace = $this->extractNamespace($data['full_name']);
-        $repository->url = $data['ssh_url'];
-        $repository->homepage = $data['html_url'];
+		$repository->id = $data['id'];
+		$repository->name = $data['name'];
+		$repository->description = $data['description'];
+		$repository->namespace = $this->extractNamespace($data['full_name']);
+		$repository->url = $data['ssh_url'];
+		$repository->homepage = $data['html_url'];
 
-        return $repository;
-    }
+		return $repository;
+	}
 
-    /**
-     * @param array $data
-     * @return Commit
-     */
-    protected function createCommit(array $data)
-    {
-        $commit = new Commit();
+	protected function createCommit(array $data): Commit
+	{
+		$commit = new Commit();
 
-        $commit->id = $data['id'];
-        $commit->message = $data['message'];
-        $commit->date = new \DateTime($data['timestamp']);
+		$commit->id = $data['id'];
+		$commit->message = $data['message'];
+		$commit->date = new \DateTimeImmutable($data['timestamp']);
 
-        $user = new User();
-        $user->name = $data['author']['name'];
-        $user->email = $data['author']['email'];
+		$user = new User();
+		$user->name = $data['author']['name'];
+		$user->email = $data['author']['email'];
 
-        $commit->author = $user;
+		$commit->author = $user;
 
-        return $commit;
-    }
+		return $commit;
+	}
 
-    /**
-     * @param string $fullName
-     * @return string
-     */
-    private function extractNamespace($fullName)
-    {
-        $parts = explode('/', $fullName);
+	private function extractNamespace(string $fullName): string
+	{
+		$parts = explode('/', $fullName);
 
-        return $parts[0];
-    }
+		return $parts[0];
+	}
 
-    /**
-     * @param array $pullRequest
-     * @return string
-     */
-    private function pullRequestState(array $pullRequest)
-    {
-        if ($pullRequest['state'] === 'open') {
-            return MergeRequestEvent::STATE_OPEN;
-        }
+	private function pullRequestState(array $pullRequest): string
+	{
+		if ($pullRequest['state'] === 'open') {
+			return MergeRequestEvent::STATE_OPEN;
+		}
 
-        if ($pullRequest['merged_at']) {
-            return MergeRequestEvent::STATE_MERGED;
-        }
+		if ($pullRequest['merged_at']) {
+			return MergeRequestEvent::STATE_MERGED;
+		}
 
-        return MergeRequestEvent::STATE_CLOSED;
-    }
+		return MergeRequestEvent::STATE_CLOSED;
+	}
 }

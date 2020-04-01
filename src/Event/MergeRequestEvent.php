@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace DavidBadura\GitWebhooks\Event;
 
@@ -10,62 +10,62 @@ use DavidBadura\GitWebhooks\Struct\Repository;
  */
 class MergeRequestEvent extends AbstractEvent
 {
-    const STATE_OPEN = 'opened'; // todo fix value
-    const STATE_MERGED = 'merged';
-    const STATE_CLOSED = 'closed';
+	const STATE_OPEN = 'opened'; // todo fix value
+	const STATE_MERGED = 'merged';
+	const STATE_CLOSED = 'closed';
 
-    /**
-     * @deprecated
-     */
-    const STATE_OPENED = self::STATE_OPEN;
+	/**
+	 * @deprecated
+	 */
+	const STATE_OPENED = self::STATE_OPEN;
 
-    /**
-     * @var int
-     */
-    public $id;
+	/**
+	 * @var int
+	 */
+	public $id;
 
-    /**
-     * @var string
-     */
-    public $title;
+	/**
+	 * @var string
+	 */
+	public $title;
 
-    /**
-     * @var string
-     */
-    public $description;
+	/**
+	 * @var string
+	 */
+	public $description;
 
-    /**
-     * @var Repository
-     */
-    public $sourceRepository;
+	/**
+	 * @var Repository
+	 */
+	public $sourceRepository;
 
-    /**
-     * @var string
-     */
-    public $targetBranch;
+	/**
+	 * @var string
+	 */
+	public $targetBranch;
 
-    /**
-     * @var string
-     */
-    public $sourceBranch;
+	/**
+	 * @var string
+	 */
+	public $sourceBranch;
 
-    /**
-     * @var string
-     */
-    public $state;
+	/**
+	 * @var string
+	 */
+	public $state;
 
-    /**
-     * @var Commit
-     */
-    public $lastCommit;
+	/**
+	 * @var Commit
+	 */
+	public $lastCommit;
 
-    /**
-     * @var \DateTime
-     */
-    public $createdAt;
+	/**
+	 * @var \DateTimeImmutable
+	 */
+	public $createdAt;
 
-    /**
-     * @var \DateTime
-     */
-    public $updatedAt;
+	/**
+	 * @var \DateTimeImmutable
+	 */
+	public $updatedAt;
 }

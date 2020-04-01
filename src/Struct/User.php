@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace DavidBadura\GitWebhooks\Struct;
 
@@ -7,18 +7,18 @@ namespace DavidBadura\GitWebhooks\Struct;
  */
 class User
 {
-    /**
-     * @var string
-     */
-    public $id;
+	/**
+	 * @var string
+	 */
+	public $id;
 
-    /**
-     * @var string
-     */
-    public $name;
+	/**
+	 * @var string
+	 */
+	public $name;
 
-    /**
-     * @var string
-     */
-    public $email;
+	/**
+	 * @var string
+	 */
+	public $email;
 }

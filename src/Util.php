@@ -1,7 +1,4 @@
-<?php
-/**
- *
- */
+<?php declare(strict_types=1);
 
 namespace DavidBadura\GitWebhooks;
 
@@ -12,46 +9,34 @@ use DavidBadura\GitWebhooks\Event\PushEvent;
  */
 class Util
 {
-    /**
-     * @param string $ref
-     * @return string
-     */
-    public static function getPushType($ref)
-    {
-        if (strpos($ref, 'refs/tags/') === 0) {
-            return PushEvent::TYPE_TAG;
-        }
+	public static function getPushType(string $ref): string
+	{
+		if (strpos($ref, 'refs/tags/') === 0) {
+			return PushEvent::TYPE_TAG;
+		}
 
-        if (strpos($ref, 'refs/heads/') === 0) {
-            return PushEvent::TYPE_BRANCH;
-        }
+		if (strpos($ref, 'refs/heads/') === 0) {
+			return PushEvent::TYPE_BRANCH;
+		}
 
-        throw new \InvalidArgumentException("type not supported");
-    }
+		throw new \InvalidArgumentException("type not supported");
+	}
 
-    /**
-     * @param string $ref
-     * @return string
-     */
-    public static function getBranchName($ref)
-    {
-        if (self::getPushType($ref) != PushEvent::TYPE_BRANCH) {
-            throw new \InvalidArgumentException("ref isn't a branch");
-        }
+	public static function getBranchName(string $ref): string
+	{
+		if (self::getPushType($ref) != PushEvent::TYPE_BRANCH) {
+			throw new \InvalidArgumentException("ref isn't a branch");
+		}
 
-        return substr($ref, 11);
-    }
+		return substr($ref, 11);
+	}
 
-    /**
-     * @param string $ref
-     * @return string
-     */
-    public static function getTagName($ref)
-    {
-        if (self::getPushType($ref) != PushEvent::TYPE_TAG) {
-            throw new \InvalidArgumentException("ref isn't a tag");
-        }
+	public static function getTagName(string $ref): string
+	{
+		if (self::getPushType($ref) != PushEvent::TYPE_TAG) {
+			throw new \InvalidArgumentException("ref isn't a tag");
+		}
 
-        return substr($ref, 10);
-    }
+		return substr($ref, 10);
+	}
 }

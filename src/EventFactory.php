@@ -1,67 +1,58 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace DavidBadura\GitWebhooks;
 
 use DavidBadura\GitWebhooks\Event\AbstractEvent;
-use DavidBadura\GitWebhooks\Provider\GitlabProvider;
 use DavidBadura\GitWebhooks\Provider\GithubProvider;
+use DavidBadura\GitWebhooks\Provider\GitlabProvider;
 use DavidBadura\GitWebhooks\Provider\ProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
  */
 class EventFactory
 {
-    /**
-     * @var ProviderInterface[]
-     */
-    protected $providers = [];
+	/**
+	 * @var ProviderInterface[]
+	 */
+	protected $providers = [];
 
-    /**
-     * @param ProviderInterface[] $providers
-     */
-    public function __construct(array $providers = [])
-    {
-        foreach ($providers as $provider) {
-            $this->addProvider($provider);
-        }
-    }
+	/**
+	 * @param ProviderInterface[] $providers
+	 */
+	public function __construct(array $providers = [])
+	{
+		foreach ($providers as $provider) {
+			$this->addProvider($provider);
+		}
+	}
 
-    /**
-     * @param Request $request
-     * @return AbstractEvent
-     */
-    public function create(Request $request)
-    {
-        foreach ($this->providers as $provider) {
-            if (!$provider->support($request)) {
-                continue;
-            }
+	public function create(ServerRequestInterface $request): ?AbstractEvent
+	{
+		foreach ($this->providers as $provider) {
+			if (!$provider->support($request)) {
+				continue;
+			}
 
-            return $provider->create($request);
-        }
-    }
+			return $provider->create($request);
+		}
 
-    /**
-     * @param ProviderInterface $provider
-     * @return $this
-     */
-    public function addProvider(ProviderInterface $provider)
-    {
-        $this->providers[] = $provider;
+		return null;
+	}
 
-        return $this;
-    }
+	public function addProvider(ProviderInterface $provider): self
+	{
+		$this->providers[] = $provider;
 
-    /**
-     * @return self
-     */
-    public static function createDefault()
-    {
-        return new self([
-            new GitlabProvider(),
-            new GithubProvider()
-        ]);
-    }
+		return $this;
+	}
+
+	public static function createDefault(): self
+	{
+		return new self([
+			new GitlabProvider(),
+			new GithubProvider()
+		]);
+	}
 }

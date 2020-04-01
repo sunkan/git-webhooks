@@ -1,37 +1,30 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace DavidBadura\GitWebhooks\Provider;
 
 use DavidBadura\GitWebhooks\Struct\Commit;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 abstract class AbstractProvider
 {
-    /**
-     * @param Request $request
-     * @return array
-     */
-    protected function getData(Request $request)
-    {
-        $body = $request->getContent();
+	protected function getData(ServerRequestInterface $request): array
+	{
+		return $request->getParsedBody();
+	}
 
-        return json_decode($body, true);
-    }
+	/**
+	 * @return Commit[]
+	 */
+	protected function createCommits(array $data)
+	{
+		$result = [];
 
-    /**
-     * @param array $data
-     * @return Commit[]
-     */
-    protected function createCommits(array $data)
-    {
-        $result = [];
+		foreach ($data as $row) {
+			$result[] = $this->createCommit($row);
+		}
 
-        foreach ($data as $row) {
-            $result[] = $this->createCommit($row);
-        }
+		return $result;
+	}
 
-        return $result;
-    }
-
-    abstract protected function createCommit(array $data);
+	abstract protected function createCommit(array $data): Commit;
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace DavidBadura\GitWebhooks\Struct;
 
@@ -7,23 +7,23 @@ namespace DavidBadura\GitWebhooks\Struct;
  */
 class Commit
 {
-    /**
-     * @var string
-     */
-    public $id;
+	/**
+	 * @var string
+	 */
+	public $id;
 
-    /**
-     * @var string
-     */
-    public $message;
+	/**
+	 * @var string
+	 */
+	public $message;
 
-    /**
-     * @var \DateTime
-     */
-    public $date;
+	/**
+	 * @var \DateTimeImmutable
+	 */
+	public $date;
 
-    /**
-     * @var User
-     */
-    public $author;
+	/**
+	 * @var User
+	 */
+	public $author;
 }

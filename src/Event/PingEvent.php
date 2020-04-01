@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace DavidBadura\GitWebhooks\Event;
 
@@ -7,23 +7,23 @@ namespace DavidBadura\GitWebhooks\Event;
  */
 class PingEvent extends AbstractEvent
 {
-    /**
-     * @var int
-     */
-    public $id;
+	/**
+	 * @var int
+	 */
+	public $id;
 
-    /**
-     * @var string
-     */
-    public $title;
+	/**
+	 * @var string
+	 */
+	public $title;
 
-    /**
-     * @var string
-     */
-    public $description;
+	/**
+	 * @var string
+	 */
+	public $description;
 
-    /**
-     * @var string
-     */
-    public $action;
+	/**
+	 * @var string
+	 */
+	public $action;
 }

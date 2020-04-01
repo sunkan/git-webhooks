@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace DavidBadura\GitWebhooks\Event;
 
@@ -7,26 +7,26 @@ namespace DavidBadura\GitWebhooks\Event;
  */
 class IssueEvent extends AbstractEvent
 {
-    const ACTION_OPEN = 'open';
-    const ACTION_CLOSE = 'close';
+	const ACTION_OPEN = 'open';
+	const ACTION_CLOSE = 'close';
 
-    /**
-     * @var int
-     */
-    public $id;
+	/**
+	 * @var int
+	 */
+	public $id;
 
-    /**
-     * @var string
-     */
-    public $title;
+	/**
+	 * @var string
+	 */
+	public $title;
 
-    /**
-     * @var string
-     */
-    public $description;
+	/**
+	 * @var string
+	 */
+	public $description;
 
-    /**
-     * @var string
-     */
-    public $action;
+	/**
+	 * @var string
+	 */
+	public $action;
 }

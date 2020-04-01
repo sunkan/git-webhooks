@@ -1,24 +1,16 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace DavidBadura\GitWebhooks\Provider;
 
 use DavidBadura\GitWebhooks\Event\AbstractEvent;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * @author David Badura <d.a.badura@gmail.com>
  */
 interface ProviderInterface
 {
-    /**
-     * @param Request $request
-     * @return AbstractEvent
-     */
-    public function create(Request $request);
+	public function create(ServerRequestInterface $request): ?AbstractEvent;
 
-    /**
-     * @param Request $request
-     * @return bool
-     */
-    public function support(Request $request);
+	public function support(ServerRequestInterface $request): bool;
 }

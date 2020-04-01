@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace DavidBadura\GitWebhooks\Struct;
 
@@ -7,33 +7,33 @@ namespace DavidBadura\GitWebhooks\Struct;
  */
 class Repository
 {
-    /**
-     * @var int
-     */
-    public $id;
+	/**
+	 * @var int
+	 */
+	public $id;
 
-    /**
-     * @var string
-     */
-    public $name;
+	/**
+	 * @var string
+	 */
+	public $name;
 
-    /**
-     * @var string
-     */
-    public $namespace;
+	/**
+	 * @var string
+	 */
+	public $namespace;
 
-    /**
-     * @var string
-     */
-    public $description;
+	/**
+	 * @var string
+	 */
+	public $description;
 
-    /**
-     * @var string
-     */
-    public $homepage;
+	/**
+	 * @var string
+	 */
+	public $homepage;
 
-    /**
-     * @var string
-     */
-    public $url;
+	/**
+	 * @var string
+	 */
+	public $url;
 }
