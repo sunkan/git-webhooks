@@ -7,6 +7,13 @@
          colors="true"
          bootstrap="tests/bootstrap.php"
 >
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+            <exclude>
+            </exclude>
+        </whitelist>
+    </filter>
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>

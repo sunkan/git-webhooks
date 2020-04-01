@@ -10,62 +10,28 @@ use DavidBadura\GitWebhooks\Struct\Repository;
  */
 class MergeRequestEvent extends AbstractEvent
 {
-	const STATE_OPEN = 'opened'; // todo fix value
-	const STATE_MERGED = 'merged';
-	const STATE_CLOSED = 'closed';
+	public const STATE_OPEN = 'opened';
+	public const STATE_MERGED = 'merged';
+	public const STATE_CLOSED = 'closed';
 
-	/**
-	 * @deprecated
-	 */
-	const STATE_OPENED = self::STATE_OPEN;
-
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	public $id;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $title;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $description;
-
-	/**
-	 * @var Repository
-	 */
+	/** @var Repository */
 	public $sourceRepository;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $targetBranch;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $sourceBranch;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $state;
-
-	/**
-	 * @var Commit
-	 */
+	/** @var Commit */
 	public $lastCommit;
-
-	/**
-	 * @var \DateTimeImmutable
-	 */
+	/** @var \DateTimeImmutable */
 	public $createdAt;
-
-	/**
-	 * @var \DateTimeImmutable
-	 */
+	/** @var \DateTimeImmutable */
 	public $updatedAt;
 }
