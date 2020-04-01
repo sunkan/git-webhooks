@@ -3,6 +3,7 @@
 namespace DavidBadura\GitWebhooks;
 
 use DavidBadura\GitWebhooks\Event\AbstractEvent;
+use DavidBadura\GitWebhooks\Provider\BitbucketProvider;
 use DavidBadura\GitWebhooks\Provider\GithubProvider;
 use DavidBadura\GitWebhooks\Provider\GitlabProvider;
 use DavidBadura\GitWebhooks\Provider\ProviderInterface;
@@ -46,6 +47,7 @@ class EventFactory
 	public static function createDefault(): self
 	{
 		return new self([
+			new BitbucketProvider(),
 			new GitlabProvider(),
 			new GithubProvider()
 		]);
